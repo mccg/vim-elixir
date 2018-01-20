@@ -153,6 +153,7 @@ syn match elixirOverridableDefine   '\<defoverridable\>\(:\)\@!'  nextgroup=elix
 syn match elixirExceptionDefine     '\<defexception\>\(:\)\@!'    nextgroup=elixirExceptionDeclaration   skipwhite skipnl
 syn match elixirCallbackDefine      '\<defcallback\>\(:\)\@!'     nextgroup=elixirCallbackDeclaration    skipwhite skipnl
 syn match elixirStructDefine        '\<defstruct\>\(:\)\@!'       skipwhite skipnl
+syn match elixirTypeDefine          '\<deftype\>\(:\)\@!'       skipwhite skipnl
 
 " Declarations
 syn match  elixirModuleDeclaration      "[^[:space:];#<]\+"        contained                      nextgroup=elixirBlock     skipwhite skipnl
@@ -187,6 +188,7 @@ hi def link elixirOverridableDefine      Define
 hi def link elixirExceptionDefine        Define
 hi def link elixirCallbackDefine         Define
 hi def link elixirStructDefine           Define
+hi def link elixirTypeDefine             Define
 hi def link elixirExUnitMacro            Define
 hi def link elixirModuleDeclaration      Type
 hi def link elixirFunctionDeclaration    Function
