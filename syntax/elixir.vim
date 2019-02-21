@@ -144,7 +144,7 @@ syn match elixirOverridableDefine   '\<defoverridable\>\(:\)\@!'  nextgroup=elix
 syn match elixirExceptionDefine     '\<defexception\>\(:\)\@!'    nextgroup=elixirExceptionDeclaration       skipwhite skipnl
 syn match elixirCallbackDefine      '\<defcallback\>\(:\)\@!'     nextgroup=elixirCallbackDeclaration        skipwhite skipnl
 syn match elixirStructDefine        '\<defstruct\>\(:\)\@!'       skipwhite skipnl
-syn match elixirTypeDefine          '\<deftype\>\(:\)\@!'       skipwhite skipnl
+syn match elixirTypeDefine          '\<deftype\>\(:\)\@!'         skipwhite skipnl
 
 " Declarations
 syn match  elixirModuleDeclaration          "[^[:space:];#<]\+"        contained                      nextgroup=elixirBlock     skipwhite skipnl
@@ -222,6 +222,7 @@ hi def link elixirRegexDelimiter             Delimiter
 hi def link elixirInterpolationDelimiter     Delimiter
 hi def link elixirSigilDelimiter             Delimiter
 hi def link elixirPrivateRecordDeclaration   elixirRecordDeclaration
+hi def link elixirTypeDefine                 Define
 
 let b:current_syntax = "elixir"
 
