@@ -13,7 +13,8 @@ class Buffer
 
   def reindent(content)
     with_file content do
-      cmd = 'ggVG999<<' # remove all indentation
+      min_indent = content.each_line.map { |line| line[/\s*/].size }.min
+      cmd = "ggVG:s/\\s\\{0,#{min_indent}}//" # remove all indentation
       cmd += 'gg=G' # force vim to indent the file
       @vim.normal cmd
     end
@@ -122,6 +123,12 @@ module EexBuffer
   end
 end
 
+module EexBuffer
+  def self.new
+    Buffer.new(VIM, :leex)
+  end
+end
+
 RSpec::Matchers.define :be_typed_with_right_indent do |syntax|
   buffer = Buffer.new(VIM, syntax || :ex)
 
@@ -138,13 +145,16 @@ RSpec::Matchers.define :be_typed_with_right_indent do |syntax|
     to be indented as
 
     #{code}
+
+    when typed
     EOM
   end
 end
 
 {
   be_elixir_indentation:  :ex,
-  be_eelixir_indentation: :eex
+  be_eelixir_indentation: :eex,
+  be_leelixir_indentation: :leex
 }.each do |matcher, type|
   RSpec::Matchers.define matcher do
     buffer = Buffer.new(VIM, type)
@@ -162,6 +172,8 @@ end
       to be indented as
 
       #{code}
+
+      when bulk indented
       EOM
     end
   end
@@ -169,7 +181,8 @@ end
 
 {
   include_elixir_syntax:  :ex,
-  include_eelixir_syntax: :eex
+  include_eelixir_syntax: :eex,
+  include_leelixir_syntax: :leex
 }.each do |matcher, type|
   RSpec::Matchers.define matcher do |syntax, pattern|
     buffer = Buffer.new(VIM, type)
@@ -276,14 +289,7 @@ RSpec::Core::ExampleGroup.instance_eval do
 
   def gen_tests(method, str)
     send method, "\n#{str}" do
-      reload = -> do
-        VIM.add_plugin(File.expand_path('..', __dir__), 'ftdetect/elixir.vim')
-        received = ExBuffer.new.reindent(str)
-        puts received
-        str == received
-      end
-      actual = ExBuffer.new.reindent(str)
-      expect(actual).to eq(str)
+      expect(str).to be_elixir_indentation
     end
 
     send method, "typed: \n#{str}" do
